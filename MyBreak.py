@@ -2,7 +2,7 @@
 # Authors : King Igwe, Nicholas Osborne
 # Date : 2024-06-10
 # Class : CMSC 450
-# Description : 
+# Description : Applying minimax with alpha-beta pruning to the game of Breakthrough.
 
 from breakthrough import *
 
@@ -18,8 +18,7 @@ class MinimaxPlayer(Player):
         #complete this
 
     def getMove(self, board):
-        #complete this
+        pass
 
     def eval(self, board):
-        #complete this – this will be your evaluation function.
-        #High values should be good for max.
+        pass
