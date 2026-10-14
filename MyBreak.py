@@ -57,9 +57,50 @@ class MinimaxPlayer(Player):
 
         return bestMove
 
+    def minimax(self, board, side, depth, alpha, beta):
+        # if the depth limit is reached or the game is over, return the evaluation of the board
+        if depth == 0 or self.rules.isGameOver(board):
+            return self.eval(board)
+
+        # get the list of possible moves for the current player
+        moveList = self.rules.getMoves(board, side)
+
+        # if there are no possible moves, return the evaluation of the board
+        if not moveList:
+            return self.eval(board)
+
+        # if the current player is maximizing, initialize the best value to negative infinity
+        if side == self.side:
+            bestValue = float('-inf')
+            for move in moveList:
+                newBoard = self.rules.nextBoard(board, move, side)
+                value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
+                bestValue = max(bestValue, value)
+                alpha = max(alpha, bestValue)
+                if alpha >= beta:
+                    break
+            return bestValue
+
+        # if the current player is minimizing, initialize the best value to positive infinity
+        else:
+            bestValue = float('inf')
+            for move in moveList:
+                newBoard = self.rules.nextBoard(board, move, side)
+                value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
+                bestValue = min(bestValue, value)
+                beta = min(beta, bestValue)
+                if alpha >= beta:
+                    break
+            return bestValue
+
     # method to evaluate the board for the MinimaxPlayer class that takes in a board as an argument
     def eval(self, board):
-        pass
+        # get the number of pieces for the current player and the opponent
+        myPieces = self.rules.countPieces(board, self.side)
+        opponentPieces = self.rules.countPieces(board, self.rules.opponent(self.side))
+
+        # return the difference between the number of pieces for the current player and the opponent
+        return myPieces - opponentPieces
 
 if __name__ == "__main__":
     game = Game(7)
