@@ -29,6 +29,6 @@ class MinimaxPlayer(Player):
     def eval(self, board):
         pass
 
-    if __name__ == "__main__":
-    game = Game(7)
-    game.playManyGames(2, MinimaxPlayer(3), RandomPlayer(), False)
+if __name__ == "__main__":
+    game = Game(6)
+    game.playManyGames(1, SimplePlayer(), RandomPlayer(), True)
