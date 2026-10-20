@@ -116,10 +116,54 @@ class MinimaxPlayer(Player):
 
     # method to evaluate the board for the MinimaxPlayer class that takes in a board as an argument
     def eval(self, board):
-        myPieces = self.rules.countSymbol(board, self.side)
-        opponentPieces = self.rules.countSymbol(
-            board, self.rules.opponent(self.side))
-        return myPieces - opponentPieces
+        # Evaluate the current position only. Minimax handles wins and losses.
+        materialWeight = 100
+        protectionWeight = 25
+        advancementWeight = 15
+
+        # An enemy this many rows from its goal threatens our home row.
+        # Rows 2 and 3 matter, and a piece in row 1 is even more dangerous.
+        # Distances also make this work when we play White.
+        dangerValues = {1: 1000, 2: 400, 3: 150}
+
+        opponent = self.rules.opponent(self.side)
+        score = 0
+
+        for side in (self.side, opponent):
+            pieces = self.rules.pieces(board, side)
+            direction = self.rules.direction(side)
+
+            # Material: having more pieces gives us a higher score.
+            sideScore = materialWeight * len(pieces)
+            closestDistance = self.rules.size - 1
+
+            for row, col in pieces:
+                distance = self.rules.rowsToGoal(side, row)
+                closestDistance = min(closestDistance, distance)
+
+                # Protection: a friendly piece diagonally behind this piece
+                # could recapture an attacker after this piece is captured.
+                supportRow = row - direction
+                if (self.rules.contains(board, supportRow, col - 1, side)
+                        or self.rules.contains(board, supportRow, col + 1, side)):
+                    sideScore += protectionWeight
+
+                # Defense: subtracting the opponent's score below heavily
+                # penalizes every enemy piece close to our home row.
+                sideScore += dangerValues.get(distance, 0)
+
+            # Advancement: reward the piece closest to the goal. Squaring
+            # its progress makes advancing a leading piece more valuable.
+            progress = self.rules.size - 1 - closestDistance
+            sideScore += advancementWeight * progress * progress
+
+            # Always score from our perspective, for either color.
+            if side == self.side:
+                score += sideScore
+            else:
+                score -= sideScore
+
+        return score
 
 if __name__ == "__main__":
     game = Game(7)
