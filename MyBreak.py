@@ -58,9 +58,10 @@ class MinimaxPlayer(Player):
         return bestMove
 
     def minimax(self, board, side, depth, alpha, beta):
-        # if the depth limit is reached or the game is over, return the evaluation of the board
-        if depth == 0 or self.rules.isGameOver(board):
-            return self.eval(board)
+        # Check wheather the game has a winner or if the depth limit is reached.
+        winner = self.rules.winner(board)
+
+        
 
         # get the list of possible moves for the current player
         moveList = self.rules.generateMoves(board, side)
