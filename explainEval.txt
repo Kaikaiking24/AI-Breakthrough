@@ -1,0 +1,7 @@
+My evaluation function estimates how favorable a board position is for the MinimaxPlayer. A higher score means the position is better for my player, while a lower score means it is better for the opponent.
+
+The function first compares the number of pieces each player has. It awards 100 points for each piece advantage. It also rewards my pieces for advancing toward their goal row and penalizes the opponent's pieces for advancing toward my side.
+
+Finally, the function considers capture opportunities. It penalizes my position when an opponent could capture one of my pieces and rewards my position when one of my pieces could capture an opponent's piece. These values help Minimax choose moves that preserve my pieces, advance toward victory, and create opportunities to capture enemy pieces.
+
+Terminal wins and losses are handled separately by the Minimax search, using positive and negative infinity. The evaluation function is used only for nonterminal positions.
