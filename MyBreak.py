@@ -61,42 +61,62 @@ class MinimaxPlayer(Player):
         # Check wheather the game has a winner or if the depth limit is reached.
         winner = self.rules.winner(board)
 
-        
+        if winner == self.side:
+            return float('inf')
+        elif winner == self.rules.opponent(self.side):
+            return float('-inf')
+        elif depth == 0:
+            return 0
 
         # get the list of possible moves for the current player
         moveList = self.rules.generateMoves(board, side)
 
-        # if there are no possible moves, return the evaluation of the board
+        # if there are no possible moves, the player looses
         if not moveList:
-            return self.eval(board)
+            if side == self.side:
+                return float('-inf')
+            else:
+                return float('inf')
 
-        # if the current player is maximizing, initialize the best value to negative infinity
+        # if the current player is maximizing
         if side == self.side:
             bestValue = float('-inf')
+
             for move in moveList:
                 newBoard = self.rules.nextBoard(board, side, move)
+
                 value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
+
                 bestValue = max(bestValue, value)
                 alpha = max(alpha, bestValue)
+
+                # Prune if we cant improve.
                 if alpha >= beta:
                     break
+
             return bestValue
 
-        # if the current player is minimizing, initialize the best value to positive infinity
+        # if the current player is minimizing
         else:
             bestValue = float('inf')
+
             for move in moveList:
                 newBoard = self.rules.nextBoard(board, side, move)
+
                 value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
+
                 bestValue = min(bestValue, value)
                 beta = min(beta, bestValue)
+
+                # Prune if we can not improve.
                 if alpha >= beta:
                     break
+
             return bestValue
 
     # method to evaluate the board for the MinimaxPlayer class that takes in a board as an argument
-    def eval()
-
+    def eval(self, board):
+        return 0
 
 if __name__ == "__main__":
     game = Game(7)
