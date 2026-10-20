@@ -66,7 +66,7 @@ class MinimaxPlayer(Player):
         elif winner == self.rules.opponent(self.side):
             return float('-inf')
         elif depth == 0:
-            return 0
+            return self.eval(board)
 
         # get the list of possible moves for the current player
         moveList = self.rules.generateMoves(board, side)
@@ -116,7 +116,10 @@ class MinimaxPlayer(Player):
 
     # method to evaluate the board for the MinimaxPlayer class that takes in a board as an argument
     def eval(self, board):
-        return 0
+        myPieces = self.rules.countSymbol(board, self.side)
+        opponentPieces = self.rules.countSymbol(
+            board, self.rules.opponent(self.side))
+        return myPieces - opponentPieces
 
 if __name__ == "__main__":
     game = Game(7)
