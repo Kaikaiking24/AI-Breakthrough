@@ -1,3 +1,4 @@
 Protection - Prioritize moving B to a space diagonal of another B
 Defense - High Priority any W in rows 2 and 3
-
+Material - Reward having more pieces compared to the opponent to try and capture more and avoid losing pieces. With having a materials count.
+Advancement - Find distance to goal for each piece and whichever piece has lowest path to goal we know that is closest to push further.
