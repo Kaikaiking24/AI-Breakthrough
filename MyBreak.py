@@ -73,7 +73,7 @@ class MinimaxPlayer(Player):
         if side == self.side:
             bestValue = float('-inf')
             for move in moveList:
-                newBoard = self.rules.nextBoard(board, move, side)
+                newBoard = self.rules.nextBoard(board, side, move)
                 value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
                 bestValue = max(bestValue, value)
                 alpha = max(alpha, bestValue)
@@ -85,7 +85,7 @@ class MinimaxPlayer(Player):
         else:
             bestValue = float('inf')
             for move in moveList:
-                newBoard = self.rules.nextBoard(board, move, side)
+                newBoard = self.rules.nextBoard(board, side, move)
                 value = self.minimax(newBoard, self.rules.opponent(side), depth - 1, alpha, beta)
                 bestValue = min(bestValue, value)
                 beta = min(beta, bestValue)
@@ -94,13 +94,8 @@ class MinimaxPlayer(Player):
             return bestValue
 
     # method to evaluate the board for the MinimaxPlayer class that takes in a board as an argument
-    def eval(self, board):
-        # get the number of pieces for the current player and the opponent
-        myPieces = self.rules.countPieces(board, self.side)
-        opponentPieces = self.rules.countPieces(board, self.rules.opponent(self.side))
+    def eval()
 
-        # return the difference between the number of pieces for the current player and the opponent
-        return myPieces - opponentPieces
 
 if __name__ == "__main__":
     game = Game(7)
