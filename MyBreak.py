@@ -23,8 +23,12 @@ class MinimaxPlayer(Player):
     # method to get the move for the MinimaxPlayer class that takes in a board as an argument
     def getMove(self, board):
         # get the list of possible moves for the current player
-        moveList = self.rules.getMoves(board, self.side)
+        moveList = self.rules.generateMoves(board, self.side)
     
+        # if there are no possible moves, return nothing
+        if not moveList:
+            return []
+
         # set the best move from the list of possible moves
         bestMove = moveList[0]
 
@@ -32,15 +36,11 @@ class MinimaxPlayer(Player):
         bestValue = float('-inf')
         alpha = float('-inf')
         beta = float('inf')
-
-        # if there are no possible moves, return nothing
-        if not moveList:
-            return []
         
         # Apply the minimax algorithm to each move in the list of possible moves
         for move in moveList:
             # make a copy of the board and apply the move to it
-            newBoard = self.rules.nextBoard(board, move, self.side)
+            newBoard = self.rules.nextBoard(board, self.side, move)
 
             # get the value of the new board using the minimax algorithm
             value = self.minimax(newBoard, self.rules.opponent(self.side), self.limit - 1, alpha, beta)
@@ -63,7 +63,7 @@ class MinimaxPlayer(Player):
             return self.eval(board)
 
         # get the list of possible moves for the current player
-        moveList = self.rules.getMoves(board, side)
+        moveList = self.rules.generateMoves(board, side)
 
         # if there are no possible moves, return the evaluation of the board
         if not moveList:
